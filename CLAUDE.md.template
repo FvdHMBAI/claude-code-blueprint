@@ -1,0 +1,143 @@
+# Project Instructions — [Your Project Name]
+
+<!-- CUSTOMIZE: Replace with your project name and a 1-2 sentence description.
+     This is the first thing Claude reads. Make it count. -->
+
+## Project Overview
+
+**[Project Name]** is a [type of application] that [what it does] for [who uses it].
+
+<!-- CUSTOMIZE: Describe your project architecture in 2-3 sentences.
+     Mention the deployment model (monolith, microservices, serverless).
+     Mention multi-tenancy approach if applicable. -->
+
+| Aspect | Detail |
+|--------|--------|
+| Type | [SaaS / Internal tool / API / CLI / etc.] |
+| Users | [Who uses this and roughly how many] |
+| Revenue | [How this makes money, if applicable] |
+
+## Tech Stack
+
+<!-- CUSTOMIZE: List your actual stack. Be specific about versions —
+     the AI will use these to generate compatible code. -->
+
+| Layer | Technology |
+|-------|------------|
+| Runtime | Node.js v22 LTS |
+| Framework | Next.js 14 (App Router) |
+| Language | TypeScript (strict mode) |
+| UI | [Your UI library] |
+| Database | PostgreSQL 17 |
+| Auth | [Your auth provider] |
+| Hosting | [Your hosting provider] |
+| CI/CD | [GitHub Actions / GitLab CI / etc.] |
+
+## Repository Structure
+
+<!-- CUSTOMIZE: Show the key directories. Don't list every file —
+     just enough for the AI to know where things live. -->
+
+```
+src/
+├── app/          # Next.js App Router pages
+├── components/   # React components
+├── lib/          # Shared utilities and business logic
+└── types/        # TypeScript type definitions
+```
+
+## Workflow Rules
+
+<!-- CUSTOMIZE: Define your branching and deployment strategy.
+     This section prevents the AI from pushing directly to main
+     or deploying without testing. -->
+
+### Branch Strategy
+
+```
+feature-branch → develop (auto-deploy to staging)
+                    ↓
+              Test on staging
+                    ↓
+              PR → main (manual deploy to production)
+```
+
+- **Direct pushes to main are BLOCKED** (enforced by hook guard)
+- All changes go through `develop` first
+- Production deploys are manual and require verification
+
+### Commit Conventions
+
+<!-- CUSTOMIZE: Define your commit message format.
+     Conventional commits work well with AI. -->
+
+- Use conventional commits: `feat:`, `fix:`, `refactor:`, `docs:`, `test:`
+- Keep messages under 72 characters
+- Reference issue numbers when applicable
+
+## Database Rules
+
+<!-- CUSTOMIZE: These prevent the AI from making dangerous
+     database changes. Adapt to your schema conventions. -->
+
+- **NEVER guess column names** — always check the schema first: `\d table_name`
+- **NEVER run ALTER USER or DROP TABLE** without explicit approval
+- **New tables MUST have** Row Level Security enabled
+- **Always use parameterized queries** — never string interpolation for SQL
+
+### Schema Conventions
+
+<!-- CUSTOMIZE: Document your naming conventions so the AI
+     generates consistent code. -->
+
+- Tables: `snake_case`, plural (`users`, `blog_posts`)
+- Columns: `snake_case` (`created_at`, `full_name`)
+- Foreign keys: `referenced_table_id` (`user_id`, `post_id`)
+- Timestamps: Always `timestamptz`, never `timestamp`
+
+## Security Constraints
+
+<!-- CUSTOMIZE: These are critical. The AI will follow these
+     rules to avoid introducing vulnerabilities. -->
+
+1. **Credentials** — NEVER display secrets, API keys, or tokens in output
+2. **Environment variables** — Use `env` files, never hardcode
+3. **User input** — Always validate at system boundaries
+4. **Auth checks** — Every API route must verify authentication
+5. **PII** — Never log personally identifiable information
+
+## Deployment
+
+<!-- CUSTOMIZE: Tell the AI how to deploy so it doesn't
+     guess or skip verification steps. -->
+
+### How to Deploy
+
+1. Merge PR to `main`
+2. [Your deployment process]
+3. Verify the deployment: [Your health check URL or command]
+
+### Post-Deploy Checklist
+
+- [ ] Health endpoint returns 200
+- [ ] Login flow works
+- [ ] Key user journeys function
+- [ ] No new errors in logs
+
+## Known Gotchas
+
+<!-- CUSTOMIZE: Document the things that repeatedly trip up
+     the AI. These save hours of debugging. -->
+
+- `profiles` table uses `full_name`, NOT `first_name` / `last_name`
+- [Your gotcha #2]
+- [Your gotcha #3]
+
+## References
+
+<!-- CUSTOMIZE: Point to external documentation, runbooks,
+     or knowledge bases the AI should consult. -->
+
+- Architecture decisions: `docs/adr/`
+- Known issues: `docs/known-issues.md`
+- API documentation: `docs/api.md`
